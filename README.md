@@ -1,2 +1,3 @@
-# llm-chat
-A chat demo for LLaMA and Alpaca
+# Chat Demo for LLaMA and Alpaca
+
+---
