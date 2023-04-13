@@ -76,7 +76,7 @@ def eval_prompt(
 
 def run_app(model, tokenizer):
 
-    logging.info("Starting chat app...")
+    logging.info("Starting chat app...\n")
 
     with gr.Blocks(theme=gr.themes.Soft(), analytics_enabled=True) as chat:
         chatbot = gr.Chatbot(label = "Alpaca Demo")
@@ -94,7 +94,7 @@ def run_app(model, tokenizer):
 
             tick = time.time()
             bot_response = eval_prompt(model, tokenizer, last_input)
-            logging.info(f"Inference time = {time.time() - tick} seconds")
+            logging.info(f"Inference time = {time.time() - tick: .3f} seconds")
 
             history[-1][1] = bot_response
             logging.info("Response generated and added to history.\n")
