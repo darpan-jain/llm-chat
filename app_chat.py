@@ -9,7 +9,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 # Dump logs to a file
-logging.getLogger().addHandler(logging.FileHandler("app_chat.log"))
+logging.getLogger().addHandler(logging.FileHandler("chat.log"))
 
 
 MODEL = "decapoda-research/llama-7b-hf"
