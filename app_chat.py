@@ -22,7 +22,7 @@ device = "cpu"
 print(f"Model device = {device}", flush=True)
 
 def load_model():
-    logger.info("Loading model...")
+    logger.info("\n\nLoading model...")
     tokenizer = LlamaTokenizer.from_pretrained(MODEL)
     model = LlamaForCausalLM.from_pretrained(MODEL, device_map={"": device}, low_cpu_mem_usage=True)
     model = PeftModel.from_pretrained(model, LORA_WEIGHTS, device_map={"": device}, torch_dtype=torch.float16)
