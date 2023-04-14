@@ -108,7 +108,8 @@ def run_app(model, tokenizer):
         clear.click(lambda: None, None, chatbot, queue=False)
 
     chat.queue()
-    chat.launch(share=True)
+    _, local_url, public_url = chat.launch(share=True)
+    logging.info(f"Chat app launched. Local url: {local_url} & Public url: {public_url}")
 
 
 if __name__ == "__main__":
