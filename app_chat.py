@@ -10,6 +10,8 @@ logging.basicConfig(level=logging.INFO)
 
 # Dump logs to a file
 logging.getLogger().addHandler(logging.FileHandler("chat.log"))
+# Disable logging on the console
+logging.getLogger().addHandler(logging.NullHandler())
 
 
 MODEL = "decapoda-research/llama-7b-hf"
