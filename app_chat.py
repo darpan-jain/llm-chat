@@ -5,14 +5,16 @@ import transformers
 import gradio as gr
 import time
 import logging
+from logging.handlers import RotatingFileHandler
 
-logging.basicConfig(level=logging.INFO)
-
-# Dump logs to a file
-logging.getLogger().addHandler(logging.FileHandler("chat.log"))
-# Disable logging on the console
-logging.getLogger().addHandler(logging.NullHandler())
-
+# Set up logging
+log_format = '<%(asctime)s> [%(levelname)s] <%(lineno)s> <%(funcName)s> %(message)s'
+file_logger = RotatingFileHandler('chat.log', mode='a', maxBytes=500 * 1024 * 1024, backupCount=10)
+formatter = logging.Formatter(log_format, datefmt='%m/%d/%Y %I:%M:%S %p')
+file_logger.setFormatter(formatter)
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
+logger.addHandler(file_logger)
 
 MODEL = "decapoda-research/llama-7b-hf"
 LORA_WEIGHTS = "tloen/alpaca-lora-7b"
@@ -20,13 +22,13 @@ device = "cpu"
 print(f"Model device = {device}", flush=True)
 
 def load_model():
-    logging.info("Loading model...")
+    logger.info("Loading model...")
     tokenizer = LlamaTokenizer.from_pretrained(MODEL)
     model = LlamaForCausalLM.from_pretrained(MODEL, device_map={"": device}, low_cpu_mem_usage=True)
     model = PeftModel.from_pretrained(model, LORA_WEIGHTS, device_map={"": device}, torch_dtype=torch.float16)
     model.eval()
 
-    logging.info("Model loaded.")
+    logger.info("Model loaded.")
     return model, tokenizer
 
 def generate_prompt(input):
@@ -78,7 +80,7 @@ def eval_prompt(
 
 def run_app(model, tokenizer):
 
-    logging.info("Starting chat app...\n")
+    logger.info("Starting chat app...\n")
 
     with gr.Blocks(theme=gr.themes.Soft(), analytics_enabled=True) as chat:
         chatbot = gr.Chatbot(label = "Alpaca Demo")
@@ -86,20 +88,20 @@ def run_app(model, tokenizer):
         clear = gr.Button("Clear")
 
         def user(user_msg, history):
-            logging.info("User input received.")
+            logger.info("User input received.")
             return "", history + [[user_msg, None]]
 
         def bot(history):
-            logging.info("Processing user input for Alpaca response...")
+            logger.info("Processing user input for Alpaca response...")
             last_input = history[-1][0]
-            logging.info(f"User input = {last_input}")
+            logger.info(f"User input = {last_input}")
 
             tick = time.time()
             bot_response = eval_prompt(model, tokenizer, last_input)
-            logging.info(f"Inference time = {time.time() - tick: .3f} seconds")
+            logger.info(f"Inference time = {time.time() - tick: .3f} seconds")
 
             history[-1][1] = bot_response
-            logging.info("Response generated and added to history.\n")
+            logger.info("Response generated and added to history.\n")
 
             return history
 
@@ -111,7 +113,7 @@ def run_app(model, tokenizer):
 
     chat.queue()
     _, local_url, public_url = chat.launch(share=True)
-    logging.info(f"Chat app launched. Local url: {local_url} & Public url: {public_url}")
+    logger.info(f"Chat app launched. Local url: {local_url} & Public url: {public_url}")
 
 
 if __name__ == "__main__":
