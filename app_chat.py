@@ -99,6 +99,7 @@ def run_app(model, tokenizer):
 
             tick = time.time()
             bot_response = eval_prompt(model, tokenizer, last_input)
+            logger.info(f"Bot response = {bot_response}")
             logger.info(f"Inference time = {time.time() - tick: .3f} seconds")
 
             history[-1][1] = bot_response
