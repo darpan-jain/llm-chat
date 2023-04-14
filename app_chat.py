@@ -115,6 +115,7 @@ def run_app(model, tokenizer):
 
     chat.queue()
     _, local_url, public_url = chat.launch(share=True)
+    print(f"Chat app launched. Local url: {local_url} & Public url: {public_url}", flush=True)
     logger.info(f"Chat app launched. Local url: {local_url} & Public url: {public_url}")
 
 
