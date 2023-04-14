@@ -83,7 +83,7 @@ def run_app(model, tokenizer):
 
     logger.info("Starting chat app...\n")
 
-    with gr.Blocks(theme=gr.themes.Soft(), analytics_enabled=True) as chat:
+    with gr.Blocks(theme=gr.themes.Soft()) as chat:
         chatbot = gr.Chatbot(label = "Alpaca Demo")
         msg = gr.Textbox(show_label = False, placeholder = "Enter your text here")
         clear = gr.Button("Clear")
@@ -114,7 +114,7 @@ def run_app(model, tokenizer):
         clear.click(lambda: None, None, chatbot, queue=False)
 
     chat.queue()
-    _, local_url, public_url = chat.launch(share=True)
+    _, local_url, public_url = chat.launch(share=True, debug=True, inline=True)
     print(f"Chat app launched. Local url: {local_url} & Public url: {public_url}", flush=True)
     logger.info(f"Chat app launched. Local url: {local_url} & Public url: {public_url}")
 
