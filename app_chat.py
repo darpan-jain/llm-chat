@@ -19,7 +19,10 @@ logger.addHandler(file_logger)
 # Load LLAMA 7B model
 MODEL = "decapoda-research/llama-7b-hf"
 LORA_WEIGHTS = "tloen/alpaca-lora-7b"
-device = "cpu"
+
+# Check if GPU is available
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+print(f"Number of GPUs available: {torch.cuda.device_count()}", flush=True)
 print(f"Model device = {device}", flush=True)
 
 def load_model():
