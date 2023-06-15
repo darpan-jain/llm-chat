@@ -12,4 +12,4 @@ RUN pip install --upgrade pip
 RUN pip install -r /app/requirements.txt
 
 # Run app.py when the container launches
-CMD ["python3", "app/app_chat.py"]
+CMD ["python3", "/app/app_chat.py"]
