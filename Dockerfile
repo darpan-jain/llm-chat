@@ -2,7 +2,7 @@ FROM python:3.10
 LABEL authors="darpanjain"
 
 # Copy the current directory contents into the container at /app
-COPY .* /app
+COPY ./* /app/
 
 # Set the working directory to /app
 RUN cd /app
